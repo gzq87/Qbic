@@ -24,5 +24,13 @@
     <ClCompile Include="appframework\main.cpp">
       <Filter>源文件\appframework</Filter>
     </ClCompile>
+    <ClCompile Include="appframework\util.cpp">
+      <Filter>源文件\appframework</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="appframework\util.h">
+      <Filter>源文件\appframework</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

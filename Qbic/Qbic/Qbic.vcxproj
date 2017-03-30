@@ -20,6 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="appframework\main.cpp" />
+    <ClCompile Include="appframework\util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="appframework\util.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{28D81514-A65B-404F-A8DD-720902515BCB}</ProjectGuid>
