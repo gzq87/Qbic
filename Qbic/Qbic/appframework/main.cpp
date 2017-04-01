@@ -3,13 +3,8 @@
 #include <windows.h>
 #include <windowsx.h>
 #include <string>
+#include <ctime>
 #include "util.h"
-
-#ifdef _UNICODE
-#define tstring wstring
-#else
-#define tstring string
-#endif // _UNICODE
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -24,20 +19,36 @@ private:
 	size_t m_wndWidth;
 	size_t m_wndHeight;
 
-	static App m_instance;
+	//HDC m_hDC;
+	HDC m_hCompatibleDC;
+	HBITMAP m_hBitmap;
+	HBITMAP m_hOldBitmap;
+	
 
-	App() {}
-	~App() {}
+	UINT32 *m_framebuffer;
+	float *m_zbuffer;
+
+	static App *m_instance;
+
+	App():m_wndWidth(0), m_wndHeight(0), m_framebuffer(NULL), m_zbuffer(NULL), m_hCompatibleDC(NULL), m_hBitmap(NULL), m_hOldBitmap(NULL) {}
+	
 
 public:
+	virtual ~App() {}
 
 	std::tstring GetWndTitle() { return m_wndTitle; }
 	HWND GetWndHandle() { return m_hwnd; }
 	size_t GetWndWidth() { return m_wndWidth; }
 	size_t GetWndHeight() { return m_wndHeight; }
+	UINT32* GetFramebuffer() { return m_framebuffer; }
+	float* GetZbuffer() { return m_zbuffer; }
 
 	static App* GetInstance() {
-		return &m_instance;
+		if (!m_instance)
+		{
+			m_instance = new App();
+		}
+		return m_instance;
 	}
 
 	bool InitWindow(std::tstring &title, std::tstring &wndclassname, HINSTANCE &hinstance, WNDPROC wndproc, size_t width, size_t height)
@@ -105,16 +116,88 @@ public:
 	}
 
 	virtual bool GameInit() {
+		/*
+		m_framebuffer = (UINT32*)malloc(m_wndWidth * m_wndHeight * sizeof(UINT32));
+		if (!m_framebuffer)
+		{
+			return false;
+		}
+		m_zbuffer = (float*)malloc(m_wndWidth * m_wndHeight * sizeof(float));
+		if (!m_zbuffer)
+		{
+			free(m_framebuffer);
+			m_framebuffer = NULL;
+			return false;
+		}
+		*/
+		
+		HDC hDC = GetDC(m_hwnd);
+		m_hCompatibleDC = CreateCompatibleDC(hDC);
+		ReleaseDC(m_hwnd, hDC);
+
+		BITMAPINFO bi = { { sizeof(BITMAPINFOHEADER), m_wndWidth, m_wndHeight, 1, 32, BI_RGB, m_wndWidth * m_wndHeight * sizeof(UINT32), 0, 0, 0, 0 } };
+		m_hBitmap = CreateDIBSection(m_hCompatibleDC, &bi, DIB_RGB_COLORS, (void**)&m_framebuffer, 0, 0);
+		m_hOldBitmap = (HBITMAP)SelectObject(m_hCompatibleDC, m_hBitmap);
+		
 		return true;
+	}
+	virtual void Render() {
+		srand(std::time(NULL));
+		UCHAR R = 0, G = 0, B = (rand() % 16) * 16;
+		UINT32 c = RGB(B, G, R);
+		for (int i = 0; i < m_wndWidth * m_wndHeight; ++i)
+		{
+			m_framebuffer[i] = c;
+		}
+	}
+	virtual void SwapBuffer() {
+		HDC hDC = GetDC(m_hwnd);
+		BitBlt(hDC, 0, 0, m_wndWidth, m_wndHeight, m_hCompatibleDC, 0, 0, SRCCOPY);
+		ReleaseDC(m_hwnd, hDC);
 	}
 	virtual void GameMain() {
 		Start_Clock();
+		
+		Render();
+
+		SwapBuffer();
+		
 		Wait_Clock(30);
 	}
 	virtual void GameShutdown() {
-
+		
+		if (m_hCompatibleDC)
+		{
+			if (m_hOldBitmap)
+			{
+				SelectObject(m_hCompatibleDC, m_hOldBitmap);
+				m_hOldBitmap = NULL;
+			}
+			DeleteDC(m_hCompatibleDC);
+			m_hCompatibleDC = NULL;
+		}
+		if (m_hBitmap)
+		{
+			DeleteObject(m_hBitmap);
+			m_hBitmap = NULL;
+		}
+		
+		/*
+		if (m_framebuffer != NULL)
+		{
+			free(m_framebuffer);
+			m_framebuffer = NULL;
+		}
+		if (m_zbuffer != NULL)
+		{
+			free(m_zbuffer);
+			m_zbuffer = NULL;
+		}
+		*/
 	}
 };
+
+App* App::m_instance = NULL;
 
 App *gApp = NULL;
 
@@ -125,6 +208,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 	{
 		gApp->Run();
 	}
+	delete gApp;
 	gApp = NULL;
 }
 
