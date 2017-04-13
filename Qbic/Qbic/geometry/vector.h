@@ -101,24 +101,24 @@ public:
 
 	//}
 
-	//returns true if the magnitude of their difference is less than EPSILON
+	//returns true if the magnitude of their difference is less than EPSILON5
 	bool operator==(const Vec2& rhs)
 	{
 		long double dx = fabsl(x, rhs.x);
 		long double dy = fabsl(y, rhs.y);
-		return (dx <= EPSILON && dy <= EPSILON);
+		return (dx <= EPSILON5 && dy <= EPSILON5);
 	}
 
-	float Length()
+	float Magnitude()
 	{
 		return sqrtf(x*x + y*y);
 	}
 
 	void Normalize()
 	{
-		float len = Length();
-		//assert(len > EPSILON);
-		if (len > EPSILON)
+		float len = Magnitude();
+		//assert(len > EPSILON5);
+		if (len > EPSILON5)
 		{
 			x /= len;
 			y /= len;
@@ -132,9 +132,9 @@ public:
 
 	Vec2 Normalized()
 	{
-		float len = Length();
-		//assert(len > EPSILON);
-		if (len > EPSILON)
+		float len = Magnitude();
+		//assert(len > EPSILON5);
+		if (len > EPSILON5)
 		{
 			return Vec2(x / len, y / len);
 		} 
@@ -147,7 +147,7 @@ public:
 	float Angle(const Vec2& rhs)
 	{
 		//a.Dot(b) = |a||b|cos(theta)
-		float cos_angle = (this->Dot(rhs)) / (this->Length()*rhs.Length());
+		float cos_angle = (this->Dot(rhs)) / (this->Magnitude()*rhs.Magnitude());
 		return acos(cos_angle);
 	}
 };
@@ -249,25 +249,25 @@ public:
 		return *this;
 	}
 
-	//returns true if the magnitude of their difference is less than EPSILON
+	//returns true if the magnitude of their difference is less than EPSILON5
 	bool operator==(const Vec3& rhs)
 	{
 		long double dx = fabsl(x, rhs.x);
 		long double dy = fabsl(y, rhs.y);
 		long double dz = fabsl(z, rhs.z);
-		return (dx <= EPSILON && dy <= EPSILON && dz <= EPSILON);
+		return (dx <= EPSILON5 && dy <= EPSILON5 && dz <= EPSILON5);
 	}
 
-	float Length()
+	float Magnitude()
 	{
 		return sqrtf(x*x + y*y + z*z);
 	}
 
 	void Normalize()
 	{
-		float len = Length();
-		//assert(len > EPSILON);
-		if (len > EPSILON)
+		float len = Magnitude();
+		//assert(len > EPSILON5);
+		if (len > EPSILON5)
 		{
 			x /= len;
 			y /= len;
@@ -283,9 +283,9 @@ public:
 
 	Vec3 Normalized()
 	{
-		float len = Length();
-		//assert(len > EPSILON);
-		if (len > EPSILON)
+		float len = Magnitude();
+		//assert(len > EPSILON5);
+		if (len > EPSILON5)
 		{
 			return Vec3(x / len, y / len, z / len);
 		}
@@ -298,7 +298,7 @@ public:
 	float Angle(const Vec3& rhs)
 	{
 		//a.Dot(b) = |a||b|cos(theta)
-		float cos_angle = (this->Dot(rhs)) / (this->Length()*rhs.Length());
+		float cos_angle = (this->Dot(rhs)) / (this->Magnitude()*rhs.Magnitude());
 		return acos(cos_angle);
 	}
 
@@ -397,26 +397,26 @@ public:
 		return *this;
 	}
 
-	//returns true if the magnitude of their difference is less than EPSILON
+	//returns true if the magnitude of their difference is less than EPSILON5
 	bool operator==(const Vec4& rhs)
 	{
 		long double dx = fabsl(x, rhs.x);
 		long double dy = fabsl(y, rhs.y);
 		long double dz = fabsl(z, rhs.z);
 		long double dw = fabsl(w, rhs.w);
-		return (dx <= EPSILON && dy <= EPSILON && dz <= EPSILON && dw <= EPSILON);
+		return (dx <= EPSILON5 && dy <= EPSILON5 && dz <= EPSILON5 && dw <= EPSILON5);
 	}
 
-	float Length()
+	float Magnitude()
 	{
 		return sqrtf(x*x + y*y + z*z + w*w);
 	}
 
 	void Normalize()
 	{
-		float len = Length();
-		//assert(len > EPSILON);
-		if (len > EPSILON)
+		float len = Magnitude();
+		//assert(len > EPSILON5);
+		if (len > EPSILON5)
 		{
 			x /= len;
 			y /= len;
@@ -434,9 +434,9 @@ public:
 
 	Vec4 Normalized()
 	{
-		float len = Length();
-		//assert(len > EPSILON);
-		if (len > EPSILON)
+		float len = Magnitude();
+		//assert(len > EPSILON5);
+		if (len > EPSILON5)
 		{
 			return Vec4(x / len, y / len, z / len, w/len);
 		}
@@ -449,7 +449,7 @@ public:
 	float Angle(const Vec4& rhs)
 	{
 		//a.Dot(b) = |a||b|cos(theta)
-		float cos_angle = (this->Dot(rhs)) / (this->Length()*rhs.Length());
+		float cos_angle = (this->Dot(rhs)) / (this->Magnitude()*rhs.Magnitude());
 		return acos(cos_angle);
 	}
 

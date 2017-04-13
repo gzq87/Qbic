@@ -30,12 +30,6 @@
     <ClCompile Include="appframework\util.cpp">
       <Filter>源文件\appframework</Filter>
     </ClCompile>
-    <ClCompile Include="geometry\matrix.cpp">
-      <Filter>源文件\geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="geometry\vector.cpp">
-      <Filter>源文件\geometry</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="appframework\util.h">
@@ -48,6 +42,9 @@
       <Filter>源文件\geometry</Filter>
     </ClInclude>
     <ClInclude Include="geometry\commondef.h">
+      <Filter>源文件\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry\quaternion.h">
       <Filter>源文件\geometry</Filter>
     </ClInclude>
   </ItemGroup>

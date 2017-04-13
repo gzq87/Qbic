@@ -21,13 +21,12 @@
   <ItemGroup>
     <ClCompile Include="appframework\main.cpp" />
     <ClCompile Include="appframework\util.cpp" />
-    <ClCompile Include="geometry\matrix.cpp" />
-    <ClCompile Include="geometry\vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="appframework\util.h" />
     <ClInclude Include="geometry\commondef.h" />
     <ClInclude Include="geometry\matrix.h" />
+    <ClInclude Include="geometry\quaternion.h" />
     <ClInclude Include="geometry\vector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
